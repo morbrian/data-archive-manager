@@ -3,7 +3,10 @@ import json
 from mediator.mediator import create_mediator
 
 def format_result(result):
-    return json.dumps(result, indent=4)
+    if result is not None:
+        return json.dumps(result, indent=4)
+    else:
+        return 'No Results'
 
 @click.group()
 def main():
@@ -31,6 +34,18 @@ def history(service_name, url, folder):
     mediator = create_mediator(service_name, url, folder)
     result = mediator.history()
     click.echo(format_result(result))
+
+@main.command('fetch')
+@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('uuid')
+@click.option('-u', '--url')
+@click.option('-f', '--folder')
+def history(service_name, uuid, url, folder):
+    """Fetch data for a specific identified snapshot"""
+    mediator = create_mediator(service_name, url, folder)
+    result = mediator.fetch_snapshot(uuid)
+    click.echo(format_result(result))
+
 
 if __name__ == "__main__":
     main()

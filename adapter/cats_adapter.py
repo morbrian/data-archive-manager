@@ -12,6 +12,11 @@ class CatsAdapter:
         response_json = response.json()
         return response_json
     
+    def store_all(self, data):
+        response = requests.put(self.base_url, json=data)
+        response_json = response.json()
+        return response_json
+    
     def get(self, id):
         url_format = '{}/{}'.format(self.base_url, id)
         response = requests.get(url_format)

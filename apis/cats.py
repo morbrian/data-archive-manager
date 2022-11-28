@@ -20,6 +20,18 @@ class CatsSnapshot(Resource):
         mediator = create_mediator(service_name)
         result = mediator.snapshot(data.get('label'))
         return result
+
+
+@api.route('/snapshot/<uuid>')
+class CatsSnapshot(Resource):
+    @api.doc('cats_fetch_snapshot')
+    def get(self, uuid):
+        """Fetch content for a snapshot of service data"""
+        mediator = create_mediator(service_name)
+        result = mediator.fetch_snapshot(uuid)
+        if result is None:
+            api.abort(404, 'uuid not found')
+        return result
     
 
 @api.route('/history')
@@ -31,3 +43,14 @@ class CatsHistory(Resource):
         mediator = create_mediator(service_name)
         result = mediator.history()
         return result
+
+@api.route('/restore/<uuid>')
+class CatsRestore(Resource):
+    @api.doc('cats_restore_snapshot')
+    def get(self, uuid):
+        """Restore identified snapshot content to service"""
+        mediator = create_mediator(service_name)
+        stored = mediator.restore_snapshot_to_service(uuid)
+        if stored is None:
+            api.abort(500, 'storage operation anomaly')
+        return stored

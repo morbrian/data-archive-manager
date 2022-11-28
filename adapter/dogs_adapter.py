@@ -7,11 +7,13 @@ class DogsAdapter:
         self.service_name = 'dogs'
         self.base_url = base_url
     
-    def id_field(self):
-        return 'id'
-    
     def export_all(self):
         response = requests.get(self.base_url)
+        response_json = response.json()
+        return response_json
+    
+    def store_all(self, data):
+        response = requests.put(self.base_url, json=data)
         response_json = response.json()
         return response_json
     

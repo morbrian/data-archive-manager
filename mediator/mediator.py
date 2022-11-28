@@ -15,6 +15,18 @@ class Mediator:
     def history(self):
         meta_list = self.archiver.list_meta()
         return meta_list
+    
+    def fetch_snapshot(self, uuid):
+        content = self.archiver.retrieve_data(uuid)
+        return content
+
+    def restore_snapshot_to_service(self, uuid):
+        data = self.fetch_snapshot(uuid)
+        if data is None:
+            raise Exception('snapshot for id "{}" not found'.format(uuid))
+        # TODO: maybe check hash?
+        stored = self.adapter.store_all(data)
+        return stored
 
 
 def get_adapter(service_name, url=None):

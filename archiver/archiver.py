@@ -14,8 +14,8 @@ class Archiver:
     def get_data_hash(self, data):
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
     
-    def get_base_name(self, stamp):
-        return secure_filename('{}_{}'.format(self.service_name, stamp))
+    def get_base_name(self, uuid, stamp):
+        return secure_filename('{}_{}_{}'.format(uuid, self.service_name, stamp))
 
     def get_data_filename(self, base_name):
         return '{}/{}.json'.format(self.base_folder, base_name)
@@ -26,11 +26,12 @@ class Archiver:
     def build_meta(self, data, label=None):
         timestamp = datetime.now().isoformat()
         stamp = timestamp if label is None else '{}_{}'.format(timestamp, label)
+        identity = str(uuid.uuid4())
         return {
-            'uuid': str(uuid.uuid4()),
+            'uuid': identity,
             'type': self.service_name,
             'datetime': timestamp,
-            'base_name': self.get_base_name(stamp),
+            'base_name': self.get_base_name(identity, stamp),
             'data_hash': self.get_data_hash(data),
             'label': label
         }
@@ -61,7 +62,15 @@ class Archiver:
         return meta
     
     def retrieve_data(self, uuid):
-        return 'TODO'
+        matched_list = list(pathlib.Path(self.base_folder).glob('{}*.json'.format(uuid)))
+        count = len(matched_list)
+        if count == 1:
+            content = json.loads(self.read_data_str(matched_list[0]))
+            return content
+        elif count > 1:
+            raise Exception('multiple matching ids')
+        else:
+            return None
     
     def list_meta(self):
         all_meta = pathlib.Path(self.base_folder).glob('*.meta')
