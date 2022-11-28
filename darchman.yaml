@@ -1,0 +1,9 @@
+
+darchman:
+  base_folder: ./darchman-data
+
+cats:
+  service_url: http://localhost:5000/cats
+
+dogs:
+  service_url: http://localhost:5000/dogs

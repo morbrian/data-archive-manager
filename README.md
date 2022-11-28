@@ -24,22 +24,18 @@ Building the Docker image
 docker build -t darchman .
 ```
 
-Running the Docker container
+Running the Docker container in development
 
 ```
-docker run -p 8080:8080 darchman
+docker run --network="host" -p 8080:8080 darchman
 
 # swagger available at http://127.0.0.1:8080/
-#
-# note that the remote sample data service urls 
-# are hard coded as localhost in the adapter/xxx_adapter.py modules
-# when running in the docker container this means you'll need to
-# re-hardcode to some IP or DNS name where the sample services are running
-# 
-# for example, if you're running them with the flask dev server, then flask run --host=0.0.0.0
-# and change localhost to be your host or wsl2 ip
-#
-# and this is a temporary pain in the ass, next up is configuration files to help handle this
+```
+
+Running the Docker container with custom configuration
+
+```
+docker run -v /full/path/data-archive-manager/darchman-local.yaml:/app/darchman.yaml -p 8080:8080 darchman
 ```
 
 Using the Mediator CLI

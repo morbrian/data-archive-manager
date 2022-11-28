@@ -1,9 +1,7 @@
 import requests
 
-dev_base_url = 'http://localhost:5000/cats'
-
 class CatsAdapter:
-    def __init__(self, base_url=dev_base_url):
+    def __init__(self, base_url):
         self.service_name = 'cats'
         self.base_url = base_url
     
