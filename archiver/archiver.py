@@ -6,7 +6,7 @@ import hashlib
 from werkzeug.utils import secure_filename
 
 class Archiver:
-    def __init__(self, service_name, base_folder='./mydata'):
+    def __init__(self, service_name, base_folder='/darchman-data'):
         self.service_name=service_name
         self.base_folder='{}/{}'.format(base_folder, service_name)
         pathlib.Path(self.base_folder).mkdir(parents=True, exist_ok=True)
