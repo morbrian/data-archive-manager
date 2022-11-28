@@ -1,6 +1,6 @@
 import click
 import json
-from mediator.mediator import Mediator, create_mediator
+from mediator.mediator import create_mediator
 
 def format_result(result):
     return json.dumps(result, indent=4)
@@ -27,7 +27,7 @@ def snapshot(service_name, url, folder):
 @click.option('-u', '--url')
 @click.option('-f', '--folder')
 def history(service_name, url, folder):
-    """Store a snapshot of service data"""
+    """List history of service data snapshots"""
     mediator = create_mediator(service_name, url, folder)
     result = mediator.history()
     click.echo(format_result(result))

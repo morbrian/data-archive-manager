@@ -3,6 +3,7 @@ import pathlib
 from datetime import datetime
 import uuid
 import hashlib
+from werkzeug.utils import secure_filename
 
 class Archiver:
     def __init__(self, service_name, base_folder='./mydata'):
@@ -14,7 +15,7 @@ class Archiver:
         return hashlib.sha256(data.encode('utf-8')).hexdigest()
     
     def get_base_name(self, stamp):
-        return '{}_{}'.format(self.service_name, stamp)
+        return secure_filename('{}_{}'.format(self.service_name, stamp))
 
     def get_data_filename(self, base_name):
         return '{}/{}.json'.format(self.base_folder, base_name)
@@ -22,14 +23,16 @@ class Archiver:
     def get_meta_filename(self, base_name):
         return '{}/{}.meta'.format(self.base_folder, base_name)
 
-    def build_meta(self, data):
-        stamp = datetime.now().isoformat()
+    def build_meta(self, data, label=None):
+        timestamp = datetime.now().isoformat()
+        stamp = timestamp if label is None else '{}_{}'.format(timestamp, label)
         return {
             'uuid': str(uuid.uuid4()),
             'type': self.service_name,
-            'datetime': stamp,
-            'base_name': self.get_base_name(stamp.replace(':', '-')),
-            'data_hash': self.get_data_hash(data)
+            'datetime': timestamp,
+            'base_name': self.get_base_name(stamp),
+            'data_hash': self.get_data_hash(data),
+            'label': label
         }
 
     def write_data_str(self, path, data_str):
@@ -43,9 +46,9 @@ class Archiver:
         # with path.open(encoding='UTF-8') as source:
         #     return source.read_text()
 
-    def store_data(self, data):
+    def store_data(self, data, label=None):
         data_str = '{}\n'.format(json.dumps(data))
-        meta = self.build_meta(data_str)
+        meta = self.build_meta(data_str, label)
         base_name = meta['base_name']
 
         data_filename = self.get_data_filename(base_name)
