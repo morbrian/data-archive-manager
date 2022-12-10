@@ -9,6 +9,10 @@ api = Namespace('darchman', description='Data Archive Manager Interface')
 snapshot_request = api.model('snapshot_request', snapshot_request_model_template)
 meta_model = api.model('meta_model', meta_model_template)
 
+def get_active_services():
+    config_data = config.get_config_data()
+    return ", ".join(config_data['active_services'])
+
 def get_mediator(service_name):
     config_data = config.get_config_data()
     return create_mediator(
@@ -18,6 +22,7 @@ def get_mediator(service_name):
     )
 
 @api.route('/<string:service_name>/snapshot')
+@api.doc(params={'service_name': get_active_services()})
 class DarchmanSnapshot(Resource):
     @api.doc('darchman_snapshot')
     @api.doc(body=snapshot_request)
@@ -31,6 +36,7 @@ class DarchmanSnapshot(Resource):
 
 
 @api.route('/<string:service_name>/snapshot/<string:uuid>')
+@api.doc(params={'service_name': get_active_services()})
 class DarchmanSnapshot(Resource):
     @api.doc('darchman_fetch_snapshot')
     def get(self, service_name, uuid):
@@ -43,6 +49,7 @@ class DarchmanSnapshot(Resource):
     
 
 @api.route('/<string:service_name>/history')
+@api.doc(params={'service_name': get_active_services()})
 class DarchmanHistory(Resource):
     @api.doc('darchman_history')
     @api.marshal_with(meta_model)
@@ -53,6 +60,7 @@ class DarchmanHistory(Resource):
         return result
 
 @api.route('/<string:service_name>/restore/<string:uuid>')
+@api.doc(params={'service_name': get_active_services()})
 class DarchmanRestore(Resource):
     @api.doc('darchman_restore_snapshot')
     def get(self, service_name, uuid):

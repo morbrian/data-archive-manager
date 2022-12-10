@@ -2,6 +2,10 @@
 darchman:
   base_folder: ./darchman-data
 
+active_services:
+  - cats
+  - dogs
+
 cats:
   service_url: http://localhost:5000/cats
 
