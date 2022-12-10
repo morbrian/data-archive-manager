@@ -1,6 +1,5 @@
 from archiver.archiver import Archiver
-from adapter.cats_adapter import CatsAdapter
-from adapter.dogs_adapter import DogsAdapter
+from adapter.generic_adapter import GenericAdapter
 
 class Mediator:
     def __init__(self, adapter, archiver):
@@ -29,15 +28,11 @@ class Mediator:
         return stored
 
 
-def get_adapter(service_name, url=None):
-    match service_name:
-        case 'cats':
-            return CatsAdapter(base_url=url) if url is not None else CatsAdapter()
-        case 'dogs':
-            return DogsAdapter(base_url=url) if url is not None else DogsAdapter()
+def get_adapter(service_name, service_url):
+    return GenericAdapter(service_name, service_url)
 
 
-def create_mediator(service_name, service_url=None, archiver_folder=None):
+def create_mediator(service_name, service_url, archiver_folder=None):
     adapter = get_adapter(service_name, service_url)
     archiver = Archiver(service_name, archiver_folder) if archiver_folder is not None else Archiver(service_name)
     return Mediator(adapter, archiver)

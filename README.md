@@ -59,6 +59,13 @@ Running the Docker container with custom configuration
 docker run -v /full/path/data-archive-manager/darchman-local.yaml:/app/darchman.yaml -p 8080:8080 darchman
 ```
 
+Configuration `PYTHONPATH` so the CLI tools can find the rest of the library.
+
+```
+# running this from your project folder will be enough for development
+export PYTHONPATH=`pwd`
+```
+
 Using the Mediator CLI
 
 ```

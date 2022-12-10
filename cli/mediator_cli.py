@@ -2,6 +2,8 @@ import click
 import json
 from mediator.mediator import create_mediator
 
+supported_services = ['cats', 'dogs']
+
 def format_result(result):
     if result is not None:
         return json.dumps(result, indent=4)
@@ -16,7 +18,7 @@ def main():
     pass
 
 @main.command('snapshot')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.option('-u', '--url')
 @click.option('-f', '--folder')
 def snapshot(service_name, url, folder):
@@ -26,7 +28,7 @@ def snapshot(service_name, url, folder):
     click.echo(format_result(result))
 
 @main.command('history')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.option('-u', '--url')
 @click.option('-f', '--folder')
 def history(service_name, url, folder):
@@ -36,7 +38,7 @@ def history(service_name, url, folder):
     click.echo(format_result(result))
 
 @main.command('fetch')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.argument('uuid')
 @click.option('-u', '--url')
 @click.option('-f', '--folder')

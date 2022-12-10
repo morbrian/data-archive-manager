@@ -1,14 +1,11 @@
 import click
 import json
-from adapter.cats_adapter import CatsAdapter
-from adapter.dogs_adapter import DogsAdapter
+from adapter.generic_adapter import GenericAdapter
 
-def get_adapter(service_name, url):
-    match service_name:
-        case 'cats':
-            return CatsAdapter(base_url=url) if url is not None else CatsAdapter()
-        case 'dogs':
-            return DogsAdapter(base_url=url) if url is not None else DogsAdapter()
+supported_services = ['cats', 'dogs']
+
+def get_adapter(service_name, service_url):
+    return GenericAdapter(service_name, service_url)
 
 @click.group()
 def main():
@@ -18,7 +15,7 @@ def main():
     pass
 
 @main.command('export')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.option('-u', '--url')
 def export(service_name, url):
     """export all data from the service"""
@@ -27,7 +24,7 @@ def export(service_name, url):
     click.echo(data)
 
 @main.command('get')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.argument('id')
 @click.option('-u', '--url')
 def get(service_name, id, url):
@@ -37,7 +34,7 @@ def get(service_name, id, url):
     click.echo(data)
 
 @main.command('put')
-@click.argument('service_name', type=click.Choice(['cats', 'dogs']))
+@click.argument('service_name', type=click.Choice(supported_services))
 @click.argument('id')
 @click.argument('data')
 @click.option('-u', '--url')
