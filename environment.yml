@@ -2,7 +2,7 @@ name: data-archive-manager
 channels:
   - defaults
 dependencies:
-  - pip:
+  - pip=22.2.2:
     - aniso8601==9.0.1
     - attrs==22.1.0
     - charset-normalizer==2.1.1

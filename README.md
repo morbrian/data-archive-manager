@@ -7,6 +7,27 @@ The intent is to explore Python with flask, swagger ui, file IO, app config, log
 The test with compatible services, also pull the 
 `morbrian/sample-flask-services` repository and run the sample service.
 
+Some First Time Initialization Stuff
+
+```
+# only need to create env the first time after clone
+conda env create -f environment.yml python=3.10.8
+
+# need a few supporting apps
+sudo apt install python3-flask
+sudo apt install python3-pip
+
+#TODO: not sure why this was needed since it's in the environment.yml
+pip install flask-restx
+```
+
+Activate Environment
+
+```
+# need to do this eachy time you want to use this in a new terminal
+conda activate data-archive-manager
+```
+
 Running the flask development server
 
 ```
@@ -29,7 +50,7 @@ Running the Docker container in development
 ```
 docker run --network="host" -p 8080:8080 darchman
 
-# swagger available at http://127.0.0.1:8080/
+# swagger available at http://127.0.0.1:8080/data-archive-manager
 ```
 
 Running the Docker container with custom configuration
@@ -58,7 +79,7 @@ python cli/adapter_cli.py
 python cli/adapter_cli.py export dogs
 
 # example export all dogs on alternate URL
-python cli/adapter_cli.py export dogs --url http://localhost:8080
+python cli/adapter_cli.py export dogs --url http://localhost:8080/data-archive-manager
 
 # example put a new cat
 python cli/adapter_cli.py put cats piggy '{ "id": "piggy", "name": "Piggy", "color": "pink" }'

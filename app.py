@@ -1,8 +1,12 @@
 import os
 from flask import Flask
 from apis import api
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_for=1, x_port=1, x_prefix=1)
+
 # TODO: this next line didn't throw errors, but curren_app never had the loaded config, tried json and yaml
 # app.config.from_file('./darchman.json', load=json.load)
 api.init_app(app)

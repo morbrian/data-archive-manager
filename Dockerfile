@@ -20,6 +20,9 @@ WORKDIR /app
 RUN useradd darchman && chown -R darchman:darchman /app/darchman-data
 USER darchman
 
+# wsgi standard way to set url context
+ENV SCRIPT_NAME=/data-archive-manager
+
 EXPOSE 8080
 
 ENTRYPOINT ["bash", "/app/bin/run.sh"]

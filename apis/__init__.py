@@ -1,3 +1,4 @@
+from flask import url_for
 from flask_restx import Api 
 
 from .darchman import api as darchman
@@ -10,6 +11,9 @@ api = Api(
     description='Data Archive Manager Service',
     # All API metadatas
 )
+@property
+def specs_url(self):
+    return url_for(self.endpoint('specs'), _external=False)
 
 api.add_namespace(darchman)
 api.add_namespace(cats)
