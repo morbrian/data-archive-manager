@@ -97,3 +97,17 @@ python cli/adapter_cli.py get cats chloe
 # example delete a dog
 python cli/adapter_cli.py delete dog piper
 ```
+
+# Versioned Build
+
+```
+export MY_TAG=0.0.1
+docker compose build
+
+# run the image to verify it
+# wil be at http://localhost:5001/data-archive-manager
+docker compose up
+
+# and if you have a place to push it
+docker compose push
+```

@@ -4,6 +4,10 @@ snapshot_request_model_template = {
     'label': fields.String(required=False, description='Supplemental label for snapshot'),
 }
 
+restore_request_model_template = {
+    'uuid': fields.String(required=True, description='Uuid of snapshot to be restored.'),
+}
+
 meta_model_template = {
     'uuid': fields.String(required=True, description='Meta data unique id'),
     'type': fields.String(required=True, description='Service name where data came from'),

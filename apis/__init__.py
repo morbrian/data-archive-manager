@@ -3,9 +3,11 @@ from flask_restx import Api
 
 from .darchman import api as darchman
 
+from .version import version
+
 api = Api(
     title='Data Archive Manager Service',
-    version='1.0',
+    version=version,
     description='Data Archive Manager Service',
     # All API metadatas
 )

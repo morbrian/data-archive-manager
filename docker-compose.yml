@@ -1,0 +1,11 @@
+version: '2.2'
+services:
+  data-archive-manager:
+    image: data-archive-manager:${MY_TAG:-latest}
+    build:
+      args:
+      - API_VERSION=${MY_TAG:-latest}
+      context: .
+      target: darchman
+    ports:
+      - 5001:8080

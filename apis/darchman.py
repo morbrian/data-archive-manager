@@ -2,11 +2,12 @@ from flask_restx import Namespace, Resource
 from flask import request, json
 from mediator.mediator import create_mediator
 from config.config import config
-from .models import meta_model_template, snapshot_request_model_template
+from .models import meta_model_template, snapshot_request_model_template, restore_request_model_template
 
 api = Namespace('darchman', description='Data Archive Manager Interface')
 
 snapshot_request = api.model('snapshot_request', snapshot_request_model_template)
+restore_request = api.model('restore_request', restore_request_model_template)
 meta_model = api.model('meta_model', meta_model_template)
 
 def get_active_services():
@@ -54,19 +55,23 @@ class DarchmanHistory(Resource):
     @api.doc('darchman_history')
     @api.marshal_with(meta_model)
     def get(self, service_name):
-        """Store a snapshot of service data"""
+        """List meta-data for past snapshots"""
         mediator = get_mediator(service_name)
         result = mediator.history()
         return result
 
-@api.route('/<string:service_name>/restore/<string:uuid>')
+
+@api.route('/<string:service_name>/restore')
 @api.doc(params={'service_name': get_active_services()})
 class DarchmanRestore(Resource):
-    @api.doc('darchman_restore_snapshot')
-    def get(self, service_name, uuid):
+    @api.doc('darchman_restore')
+    @api.doc(body=restore_request)
+    def post(self, service_name, uuid):
         """Restore identified snapshot content to service"""
+        # TODO: enhance our restore capabilities with migrators and other modifiers
+        data = json.loads(request.data)
         mediator = get_mediator(service_name)
-        stored = mediator.restore_snapshot_to_service(uuid)
+        stored = mediator.restore_snapshot_to_service(data.get('uuid'))
         if stored is None:
             api.abort(500, 'storage operation anomaly')
         return stored

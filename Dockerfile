@@ -1,4 +1,6 @@
-FROM python:3.10.8-slim
+FROM python:3.10.8-slim as darchman
+
+ARG API_VERSION
 
 ENV DARCHMAN_CONFIG ./darchman.yaml
 
@@ -17,7 +19,10 @@ COPY ./app.py /app
 COPY ./wsgi.py /app
 WORKDIR /app
 
-RUN useradd darchman && chown -R darchman:darchman /app/darchman-data
+RUN echo "version = '${API_VERSION}'" > ./apis/version.py && \
+    useradd darchman && \
+    chown -R darchman:darchman /app/darchman-data
+
 USER darchman
 
 # wsgi standard way to set url context
