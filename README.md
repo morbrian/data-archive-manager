@@ -7,7 +7,22 @@ The intent is to explore Python with flask, swagger ui, file IO, app config, log
 The test with compatible services, also pull the 
 `morbrian/sample-flask-services` repository and run the sample service.
 
-Some First Time Initialization Stuff
+## BACKGROUND
+
+I created this as a side project on my own computer with my own time with the goal of exploring
+the combination of technologies in this stack (python, flask, swagger, docker in combination).
+
+I will probably continue tinkering with this code because it's a fun divergence when I want to explore
+a technical topic without the baggage of worrying whether it meets anybody's needs other than my own.
+
+With that said, because a good portion of this is actually pretty useful parts of it will probalby trickle
+into my daily tasks and be easily recognizable here. 
+
+And I'm communicating this up front here because if somebody stumbles on to my ghost-town of a github page
+I want to be sure it's understood that this work originated here in my unfunded world of pet projects
+and education sandboxes, __not the other way around__.
+
+### Some First Time Initialization Stuff
 
 ```
 # only need to create env the first time after clone
@@ -98,7 +113,7 @@ python cli/adapter_cli.py get cats chloe
 python cli/adapter_cli.py delete dog piper
 ```
 
-# Versioned Build
+###  Versioned Build
 
 ```
 export MY_TAG=0.0.1
