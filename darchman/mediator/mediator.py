@@ -1,3 +1,5 @@
+import difflib
+import json
 from archiver.archiver import Archiver
 from adapter.generic_adapter import GenericAdapter
 
@@ -26,6 +28,16 @@ class Mediator:
         # TODO: maybe check hash?
         stored = self.adapter.store_all(data)
         return stored
+    
+    def diff_snapshot_contents(self, uuid1, uuid2):
+        data1 = self.fetch_snapshot(uuid1)
+        if data1 is None:
+            raise Exception('snapshot for id "{}" not found'.format(uuid1))
+        data2 = self.fetch_snapshot(uuid2)
+        if data2 is None:
+            raise Exception('snapshot for id "{}" not found'.format(uuid2))
+        delta = difflib.HtmlDiff().make_file(json.dumps(data1, indent = 3).split('\n'), json.dumps(data2, indent = 3).split('\n'), 'one', 'two')
+        return delta
 
 
 def get_adapter(service_name, service_url):
