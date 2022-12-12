@@ -1,5 +1,3 @@
 *.code-workspace
 __pycache__
-archive_data
-mydata
 darchman-data
