@@ -48,6 +48,17 @@ def history(service_name, uuid, url, folder):
     result = mediator.fetch_snapshot(uuid)
     click.echo(format_result(result))
 
+@main.command('diff')
+@click.argument('service_name', type=click.Choice(supported_services))
+@click.argument('uuid1')
+@click.argument('uuid2')
+@click.option('-u', '--url')
+@click.option('-f', '--folder')
+def diff(service_name, uuid1, uuid2, url, folder):
+    """Fetch data for a specific identified snapshot"""
+    mediator = create_mediator(service_name, url, folder)
+    result = mediator.diff_snapshot_contents(uuid1, uuid2)
+    click.echo(result)
 
 if __name__ == "__main__":
     main()

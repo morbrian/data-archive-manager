@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource
-from flask import request, json
+from flask import request, make_response, json
 from mediator.mediator import create_mediator
 from config.config import config
 from .models import meta_model_template, snapshot_request_model_template, restore_request_model_template
@@ -47,6 +47,28 @@ class DarchmanSnapshot(Resource):
         if result is None:
             api.abort(404, 'uuid not found')
         return result
+
+
+@api.route('/<string:service_name>/diff')
+@api.doc(params={'service_name': get_active_services()})
+class DarchmanDiff(Resource):
+    @api.doc('darchman_fetch_snapshot')
+    @api.doc(params={
+        'uuid1': {'description': 'Uuid of first content'},
+        'uuid2': {'description': 'Uuid of second content'}
+    })
+    @api.produces(['text/html'])
+    def get(self, service_name):
+        """Produce HTML diff of the snapshot content for two uuids"""
+        uuid1 = request.args.get('uuid1')
+        uuid2 = request.args.get('uuid2')
+        mediator = get_mediator(service_name)
+        result =  mediator.diff_snapshot_contents(uuid1, uuid2)
+        if result is None:
+            api.abort(404, 'uuid not found')
+        response = make_response(result)
+        response.headers['Content-Type'] = 'text/html'
+        return response
     
 
 @api.route('/<string:service_name>/history')
