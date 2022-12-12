@@ -5,7 +5,7 @@ services:
     build:
       args:
       - API_VERSION=${MY_TAG:-latest}
-      context: .
+      context: ./darchman
       target: darchman
     ports:
       - 5001:8080
